@@ -46,9 +46,36 @@ export const http = async (
     });
 };
 
+// js中的typeof是在runtime时运行的
+// ts中的typeof是在静态环境运行的
 export const useHttp = () => {
   const { user } = useAuth();
-  // TODO 讲解 TS 操作符
+  // TODO 讲解 TS 操作符 TS Utility Types// typeof 的类型
   return (...[endpoint, config]: Parameters<typeof http>) =>
     http(endpoint, { ...config, token: user?.token });
 };
+
+// // 联合类型
+// let my: string|number
+
+// my = 'seven'
+// my = 7
+// // my = {}
+// // 不能将类型“{}”分配给类型“string | number”。
+// // 不能将类型“{}”分配给类型“number”。ts(2322)
+
+// // 类型别名
+// // 类型别名和interface 在很多情况下可以互换
+// // 区别：interface在这种情况下无法替代类型别名
+// type FavoriteNumber = string|number
+// let rese:FavoriteNumber = '6'
+// rese = 6
+
+// //interface 也没法实现Utility type
+
+// type Person = {
+//   name:string,
+//   age:number
+// }
+// const xiaoming:Partial<Person> ={}//使接口参数都变成可选
+// const shenmiren:Omit<Person,'name'|'age'> ={} //删除接口里的定义
