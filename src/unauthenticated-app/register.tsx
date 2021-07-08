@@ -18,10 +18,10 @@ import { LongButton } from "unauthenticated-app";
 // // 鸭子类型(duck typing)：面向接口编程 而不是 面向对象编程
 // const a = {id: 1, name: 'jack'}
 // test(a)
-const apiUrl = process.env.REACT_APP_API_URL;
+// const apiUrl = process.env.REACT_APP_API_URL;
 
 export const RegisterScreen = () => {
-  const { register, user } = useAuth();
+  const { register } = useAuth();
 
   // HTMLFormElement extends Element
   const handleSubmit = (values: { username: string; password: string }) => {
