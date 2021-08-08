@@ -1,9 +1,12 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
 import { cleanObject } from "utils";
 import { useAuth } from "context/auth-context";
 
 import { Button, Form, Input } from "antd";
 import { LongButton } from "unauthenticated-app";
+import { useAsync } from "utils/use-async";
+import { rejects } from "assert";
+import { resolve } from "path";
 
 // interface Base {
 //   id: number
@@ -21,17 +24,47 @@ import { LongButton } from "unauthenticated-app";
 // test(a)
 // const apiUrl = process.env.REACT_APP_API_URL;
 
-export const LoginScreen = () => {
+export const LoginScreen = ({
+  onError,
+}: {
+  onError: (error: Error) => void;
+}) => {
   const { login } = useAuth();
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
+  // const [num,setNum] =useState(0);
 
   // HTMLFormElement extends Element
-  const handleSubmit = (values: { username: string; password: string }) => {
+  const handleSubmit = async (values: {
+    username: string;
+    password: string;
+  }) => {
     // event.preventDefault();
     // const username = (event.currentTarget.elements[0] as HTMLInputElement)
     // .value;
     // const password = (event.currentTarget.elements[1] as HTMLInputElement)
     // .value;
-    login(values);
+    // await setNum(num +1);
+    // console.log(num)
+    // new Promise(async(resolve,reject)=>{
+    //   console.log(111)
+    //   await setNum(num +1);
+    //   resolve('ok')
+    // }).then(()=>{
+    //   console.log(num)
+
+    // })
+    // console.log(111)
+    // setNum(num +1);
+    // setTimeout(()=>{
+
+    //   console.log(num)
+    // },2000)
+    try {
+      await run(login(values));
+      // .catch(onError);
+    } catch (e) {
+      onError(e);
+    }
   };
 
   return (
@@ -53,7 +86,7 @@ export const LoginScreen = () => {
         <Input placeholder={"密码"} type="password" id={"password"} />
       </Form.Item>
       <Form.Item key={"denglu"}>
-        <LongButton htmlType={"submit"} type={"primary"}>
+        <LongButton loading={isLoading} htmlType={"submit"} type={"primary"}>
           登录
         </LongButton>
       </Form.Item>
