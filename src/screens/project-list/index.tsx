@@ -2,7 +2,12 @@ import React from "react";
 import { SearchPanel } from "screens/project-list/search-panel";
 import { List, Project } from "screens/project-list/list";
 import { useEffect, useState } from "react";
-import { cleanObject, useDebounce, useMount } from "../../utils";
+import {
+  cleanObject,
+  useDebounce,
+  useDocumentTitle,
+  useMount,
+} from "../../utils";
 // import * as qs from "qs";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
@@ -23,12 +28,13 @@ export const ProjectListScreen = () => {
     personId: "",
   });
   const debouncedParam = useDebounce(param, 200);
+  const { data: list, isLoading, error } = useProjects(debouncedParam);
+  const { data: users } = useUsers();
+  useDocumentTitle("项目列表", false);
   // const [list, setList] = useState([]);
   // const [loading, setLoading] = useState(false);
   // const [error, setError] = useState<null | Error>(null);
   // const client = useHttp();
-  const { data: list, isLoading, error } = useProjects(debouncedParam);
-  const { data: users } = useUsers();
   // useEffect(() => {
   //   run(client("projects", { data: cleanObject(debouncedParam) }))
   //   // setLoading(true);
