@@ -2,7 +2,10 @@ import { Table, TableProps } from "antd";
 import dayjs from "dayjs";
 import React from "react";
 import { User } from "screens/project-list/search-panel";
+// react-router 和 react-router-dom 的关系，类似于 react 和 react-dom/react-native/react-vr。。。
+import { Link } from "react-router-dom";
 
+//TODO 把所有ID都改成number类型
 export interface Project {
   id: string;
   name: string;
@@ -24,8 +27,11 @@ export const List = ({ users, ...props }: ListProps) => {
       columns={[
         {
           title: "名称",
-          dataIndex: "name",
+          // dataIndex: "name",
           sorter: (a, b) => a.name.localeCompare(b.name),
+          render(value, project) {
+            return <Link to={String(project.id)}>{project.name}</Link>;
+          },
         },
         {
           title: "部门",
